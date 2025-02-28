@@ -9,26 +9,29 @@ be the parameters. All of them are required to have default values!
 import numpy as np
 from gnuradio import gr
 
+class blk(gr.sync_block):
+    """Embedded Python Block example - a simple accumulate block"""
 
-class blk(gr.sync_block):  # other base classes are basic_block, decim_block, interp_block
-    """Embedded Python Block example - a simple multiply const"""
-
-    def __init__(self):  # only default arguments here
-        """arguments to this function show up as parameters in GRC"""
+    def __init__(self):
+        """Constructor for the accumulate block."""
         gr.sync_block.__init__(
             self,
-            name='e_Acum',   # will show up in GRC
-            in_sig=[np.float32],
-            out_sig=[np.float32]
+            name='e_Acum',   # Name of the block in GRC
+            in_sig=[np.float32],  # Input signature: single stream of float32
+            out_sig=[np.float32]  # Output signature: single stream of float32
         )
-        # if an attribute with the same name as a parameter is found,
-        # a callback is registered (properties work, too).
+        # Initialize an internal state variable to keep track of the cumulative sum
+        self.accumulator = np.float32(0.0)
 
     def work(self, input_items, output_items):
-        """example: multiply with constant"""
-        x= input_items[0]
-        y0= output_items[0]
+        """Accumulate the input items and produce the output."""
+        x = input_items[0]  # Input items
+        y0 = output_items[0]  # Output items
 
-        y0[:] = np.cumsum(x)
+        # Calculate the cumulative sum for the current input items
+        y0[:] = np.cumsum(x) + self.accumulator
 
-        return len(y0)
+        # Update the internal accumulator with the last value of the cumulative sum
+        self.accumulator = y0[-1]
+
+        return len(y0)  # Return the number of output items processed

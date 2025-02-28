@@ -72,18 +72,21 @@ blocks:
       \ GRC will instantiate the first class it finds\nto get ports and parameters\
       \ of your block. The arguments to __init__  will\nbe the parameters. All of\
       \ them are required to have default values!\n\"\"\"\n\nimport numpy as np\n\
-      from gnuradio import gr\n\n\nclass blk(gr.sync_block):  # other base classes\
-      \ are basic_block, decim_block, interp_block\n    \"\"\"Embedded Python Block\
-      \ example - a simple multiply const\"\"\"\n\n    def __init__(self):  # only\
-      \ default arguments here\n        \"\"\"arguments to this function show up as\
-      \ parameters in GRC\"\"\"\n        gr.sync_block.__init__(\n            self,\n\
-      \            name='e_Acum',   # will show up in GRC\n            in_sig=[np.float32],\n\
-      \            out_sig=[np.float32]\n        )\n        # if an attribute with\
-      \ the same name as a parameter is found,\n        # a callback is registered\
-      \ (properties work, too).\n\n    def work(self, input_items, output_items):\n\
-      \        \"\"\"example: multiply with constant\"\"\"\n        x= input_items[0]\n\
-      \        y0= output_items[0]\n\n        y0[:] = np.cumsum(x)\n\n        return\
-      \ len(y0)\n"
+      from gnuradio import gr\n\nclass blk(gr.sync_block):\n    \"\"\"Embedded Python\
+      \ Block example - a simple accumulate block\"\"\"\n\n    def __init__(self):\n\
+      \        \"\"\"Constructor for the accumulate block.\"\"\"\n        gr.sync_block.__init__(\n\
+      \            self,\n            name='e_Acum',   # Name of the block in GRC\n\
+      \            in_sig=[np.float32],  # Input signature: single stream of float32\n\
+      \            out_sig=[np.float32]  # Output signature: single stream of float32\n\
+      \        )\n        # Initialize an internal state variable to keep track of\
+      \ the cumulative sum\n        self.accumulator = np.float32(0.0)\n\n    def\
+      \ work(self, input_items, output_items):\n        \"\"\"Accumulate the input\
+      \ items and produce the output.\"\"\"\n        x = input_items[0]  # Input items\n\
+      \        y0 = output_items[0]  # Output items\n\n        # Calculate the cumulative\
+      \ sum for the current input items\n        y0[:] = np.cumsum(x) + self.accumulator\n\
+      \n        # Update the internal accumulator with the last value of the cumulative\
+      \ sum\n        self.accumulator = y0[-1]\n\n        return len(y0)  # Return\
+      \ the number of output items processed\n"
     affinity: ''
     alias: ''
     comment: ''
@@ -91,11 +94,11 @@ blocks:
     minoutbuf: '0'
   states:
     _io_cache: ('e_Acum', 'blk', [], [('0', 'float', 1)], [('0', 'float', 1)], 'Embedded
-      Python Block example - a simple multiply const', [])
+      Python Block example - a simple accumulate block', [])
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [496, 192.0]
+    coordinate: [520, 160.0]
     rotation: 0
     state: enabled
 - name: epy_block_1
@@ -129,7 +132,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [504, 312.0]
+    coordinate: [528, 336.0]
     rotation: 0
     state: enabled
 - name: qtgui_number_sink_0
@@ -192,7 +195,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [712, 96.0]
+    coordinate: [768, 120.0]
     rotation: 0
     state: enabled
 - name: qtgui_number_sink_0_0
