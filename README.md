@@ -1,6 +1,6 @@
 # COMU2_G5_A1_2025_1
 
-# Modulación PSK **  
+# Modulación PSK   
 Este repositorio contiene el desarrollo de un laboratorio enfocado en la implementación de un transmisor **M-PSK** (Modulación por Desplazamiento de Fase). 
 El objetivo principal es diseñar y analizar un sistema de comunicación digital utilizando **GNURadio**, explorando conceptos clave como diagramas de constelación, efectos del ruido, parámetros de señal modulada y la estructura de bloques necesaria para su funcionamiento.  
 
