@@ -7,6 +7,5 @@ Este repositorio contiene los resultados y códigos del laboratorio de Comunicac
 ## Objetivos
 1. Implementar modulaciones digitales en GNU Radio.
 2. Analizar constelaciones y espectros con/sin ruido.
-3. Generar curvas BER vs. \(E_b/N_0\) para QPSK y 8-PSK.
-4. Evaluar el efecto de la frecuencia portadora (12.5 MHz vs. 25.6 MHz).
+
 
